@@ -4,12 +4,15 @@ import { Repository } from 'typeorm';
 import { CreateCidadeDto } from './dto/create-cidade.dto/create-cidade.dto';
 import { UpdateCidadeDto } from './dto/update-cidade.dto/update-cidade.dto';
 import { Cidade } from './entities/cidade.entity/cidade.entity';
+import { Uf } from './entities/uf.entity/uf.entity';
 
 @Injectable()
 export class CidadesService {
   constructor(
     @InjectRepository(Cidade)
     private readonly cidadeRepository: Repository<Cidade>,
+    @InjectRepository(Uf)
+    private readonly ufRepository: Repository<Uf>,
   ) {}
 
   findAll() {
@@ -48,5 +51,8 @@ export class CidadesService {
       throw new NotFoundException(`Cidade ${id} not found`);
     }
     return this.cidadeRepository.remove(cidade);
+  }
+  private async preloadUfByName(uf: string): Promise<Uf> {
+    const uf = await this.ufRepository.findOne({ uf });
   }
 }
