@@ -9,5 +9,5 @@ export class Uf {
   name: string;
 
   @OneToMany(() => Cidade, (cidade) => cidade.uf)
-  cidade: Cidade;
+  cidade: Cidade[];
 }

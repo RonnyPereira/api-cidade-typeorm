@@ -18,5 +18,5 @@ export class Cidade {
   @ManyToOne(() => Uf, (uf) => uf.cidade, {
     cascade: true,
   })
-  uf: string;
+  uf: string[];
 }
