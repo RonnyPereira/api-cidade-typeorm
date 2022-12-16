@@ -1,4 +1,11 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { Uf } from '../uf.entity/uf.entity';
 
 @Entity('cidade')
 export class Cidade {
@@ -6,6 +13,10 @@ export class Cidade {
   id: number;
   @Column()
   nome_cidade: string;
-  @Column('json', { nullable: true })
-  uf: string[];
+
+  @JoinTable()
+  @ManyToMany(() => Uf, (uf) => uf.cidade, {
+    cascade: true,
+  })
+  ufs: Uf[];
 }
