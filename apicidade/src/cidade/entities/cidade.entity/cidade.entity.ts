@@ -15,8 +15,6 @@ export class Cidade {
   nome_cidade: string;
 
   @JoinTable()
-  @ManyToOne(() => Uf, (uf) => uf.cidade, {
-    cascade: true,
-  })
-  uf: string[];
+  @ManyToOne(() => Uf, (uf) => uf.cidade)
+  uf: Uf;
 }

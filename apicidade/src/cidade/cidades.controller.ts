@@ -9,7 +9,6 @@ import {
   Post,
 } from '@nestjs/common/decorators';
 import { CreateCidadeDto } from './dto/create-cidade.dto/create-cidade.dto';
-import { UpdateCidadeDto } from './dto/update-cidade.dto/update-cidade.dto';
 
 @Controller('cidades')
 export class CidadesController {
@@ -30,7 +29,7 @@ export class CidadesController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCidadeDto: UpdateCidadeDto) {
+  update(@Param('id') id: number, @Body() updateCidadeDto: CreateCidadeDto) {
     return this.cidadesService.update(id, updateCidadeDto);
   }
   @Delete(':id')

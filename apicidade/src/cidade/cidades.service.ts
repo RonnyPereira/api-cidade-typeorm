@@ -1,9 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { targetModulesByContainer } from '@nestjs/core/router/router-module';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateCidadeDto } from './dto/create-cidade.dto/create-cidade.dto';
-import { UpdateCidadeDto } from './dto/update-cidade.dto/update-cidade.dto';
+import {
+  CreateCidadeDto,
+  UpdateCidadeDto,
+} from './dto/create-cidade.dto/create-cidade.dto';
 import { Cidade } from './entities/cidade.entity/cidade.entity';
 import { Uf } from './entities/uf.entity/uf.entity';
 
@@ -28,34 +29,35 @@ export class CidadesService {
     }
     return cidade;
   }
-  //********************************************************************************************** */
+  //**************************************Relação******************************************************** */
   async create(createCidadeDto: CreateCidadeDto) {
-    const uf = await Promise.all(
-      createCidadeDto.uf.map((name) => this.preloadUfByName(name)),
-    );
+    const uf = await this.preloadUfByName(createCidadeDto.uf);
+    //----------------------------------------------------------------------
     const cidade = this.cidadeRepository.create({
       ...createCidadeDto,
       uf,
     });
     return this.cidadeRepository.save(cidade);
   }
-  //********************************************************************************************** */
-  async update(id: string, updateCidadeDto: UpdateCidadeDto) {
-    const uf =
-      updateCidadeDto.uf &&
-      (await Promise.all(
-        updateCidadeDto.uf.map((name) => this.preloadUfByName(name)),
-      ));
-    const cidade = await this.cidadeRepository.preload({
-      id: +id,
-      ...updateCidadeDto,
-      uf,
-    });
-    if (!cidade) {
-      throw new NotFoundException(`Cidade ${id} not found`);
+
+  //**********************************Relação************************************************************** */
+  async update(id: number, dto: CreateCidadeDto) {
+    const uf = this.preloadUfByName(id);
+    if (uf) {
+      const updatedto = new UpdateCidadeDto(dto.nome_cidade, uf);
+      const cidade = await this.cidadeRepository.preload({
+        id: +id,
+        ...updatedto,
+      });
+      if (!cidade) {
+        throw new NotFoundException(`Cidade ${id} not found`);
+      }
+      return this.cidadeRepository.save(cidade);
+    } else {
+      throw new NotFoundException(`Estado ${id} not found`);
     }
-    return this.cidadeRepository.save(cidade);
   }
+
   //********************************************************************************************* */
   async remove(id: string) {
     const cidade = await this.cidadeRepository.findOne({
@@ -67,12 +69,11 @@ export class CidadesService {
     return this.cidadeRepository.remove(cidade);
   }
 
-  //********************************************************************************** */
-  private async preloadUfByName(name: string): Promise<Uf> {
-    const uf = await this.ufRepository.findOne({ where: { name } });
+  //****************************relaçãp****************************************************** */
+  private async preloadUfByName(idestado: number): Promise<Uf> {
+    const uf = await this.ufRepository.findOne({ where: { id: idestado } });
     if (uf) {
       return uf;
     }
-    return this.ufRepository.create({ name });
   }
 }
