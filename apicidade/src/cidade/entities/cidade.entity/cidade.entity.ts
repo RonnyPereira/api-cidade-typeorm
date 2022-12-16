@@ -6,6 +6,6 @@ export class Cidade {
   id: number;
   @Column()
   nome_cidade: string;
-  @Column()
-  uf: string;
+  @Column('json', { nullable: true })
+  uf: string[];
 }
