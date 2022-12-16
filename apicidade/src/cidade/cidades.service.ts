@@ -19,11 +19,16 @@ export class CidadesService {
   ) {}
   //************************************************************************************************* */
   findAll() {
-    return this.cidadeRepository.find();
+    return this.cidadeRepository.find({
+      relations: ['uf'],
+    });
   }
   //************************************************************************************************ */
   findOne(id: string) {
-    const cidade = this.cidadeRepository.findOne({ where: { id: Number(id) } });
+    const cidade = this.cidadeRepository.findOne({
+      where: { id: Number(id) },
+      relations: ['uf'],
+    });
     if (!cidade) {
       throw new NotFoundException(`Cidade ${id} not found`);
     }
