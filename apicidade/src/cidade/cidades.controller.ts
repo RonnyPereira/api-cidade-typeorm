@@ -8,8 +8,8 @@ import {
   Patch,
   Post,
 } from '@nestjs/common/decorators';
-import { CreateCidadeDto } from './dto/create-cidade.dto/create-cidade.dto';
-import { UpdateCidadeDto } from './dto/update-cidade.dto/update-cidade.dto';
+import { CreateCidadeDto } from './dto/create-cidade.dto';
+import { UpdateCidadeDto } from './dto/update-cidade.dto';
 
 @Controller('cidades')
 export class CidadesController {

@@ -5,7 +5,7 @@ import {
   ManyToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Uf } from '../uf.entity/uf.entity';
+import { Uf } from './uf.entity';
 
 @Entity('cidade')
 export class Cidade {

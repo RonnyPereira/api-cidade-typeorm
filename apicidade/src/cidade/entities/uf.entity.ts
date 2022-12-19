@@ -1,5 +1,5 @@
 import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { Cidade } from '../cidade.entity/cidade.entity';
+import { Cidade } from './cidade.entity';
 
 @Entity('ufs')
 export class Uf {
