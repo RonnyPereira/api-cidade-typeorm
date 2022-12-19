@@ -12,7 +12,7 @@ export const dataSource = new DataSource({
   migrations: ['dist/migrations/*{.ts,.js}'],
   migrationsTransactionMode: 'all',
   synchronize: false,
-  migrationsRun: true,
+  migrationsRun: false,
   // options: { encrypt: false },
   logging: false, // log de requisições exibidas no console de desenvolvimento (prod / dev)
 });
