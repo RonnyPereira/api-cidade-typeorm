@@ -1,13 +1,14 @@
 import { Module } from '@nestjs/common';
 import { CidadesController } from './cidades.controller';
 import { CidadesService } from './cidades.service';
-import { Cidade } from './entities/cidade.entity';
-import { TypeOrmModule } from '@nestjs/typeorm/dist';
-import { Uf } from './entities/uf.entity';
+import { DatabaseModule } from 'src/database/database.module';
+import { cidadeProviders } from './cidades.providers';
+import { ufProviders } from './uf.providers';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Cidade, Uf])],
+  imports: [DatabaseModule],
+  providers: [...cidadeProviders, ...ufProviders, CidadesService],
+  exports: [...cidadeProviders, ...ufProviders],
   controllers: [CidadesController],
-  providers: [CidadesService],
 })
 export class CidadesModule {}
