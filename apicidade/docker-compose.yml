@@ -1,0 +1,29 @@
+version: "3"
+
+services:
+  app:
+    build: .
+    entrypoint: ./docker/entrypoint.sh
+    container_name: cidade-app
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/home/node/app
+    depends_on:
+      - db
+
+    db:
+      build: .docker/postgres
+      container-name: cidade-app
+      restart: always
+      tty: true
+      posts:
+        - "5432:5432"   
+      volumes:
+        - .docker/dbdata:/var/lib/postgresql/data
+      environment:
+        - POSTGRES_PASSWORD=postgres
+        - POSTGRES_DB=cidade-app   
+
+      
+
